@@ -44,6 +44,9 @@ python scripts/quickstart.py         # 5-minute tour
 
 Python ≥ 3.10. No compiler, no licence server, no solver installation.
 
+**新手从这里开始 → [`docs/使用说明.md`](docs/使用说明.md)**：从装 Python 到给导师演示的
+逐步中文操作手册，每一步都写了屏幕上应该出现什么。
+
 ## Quick start / 快速开始
 
 ```python
@@ -135,8 +138,8 @@ conversion step, and the Julia code keeps working on the same files.
 ## Tests / 测试
 
 ```bash
-pytest                 # fast checks (~10 s)
-pytest --run-slow      # also solves full NLPs (~50 s)
+python -m pytest              # fast checks (~10 s)
+python -m pytest --run-slow   # also solves full NLPs (~50 s)
 ```
 
 78 tests covering the JLD2 decoding, the hydraulic model against the stored

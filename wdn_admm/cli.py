@@ -174,6 +174,38 @@ def cmd_scp(args: argparse.Namespace) -> int:
     return 0 if result.feasible else 1
 
 
+def cmd_show(args: argparse.Namespace) -> int:
+    """Print saved result files as a table, without writing any Python."""
+    paths = sorted({p for pattern in args.results for p in glob.glob(pattern)})
+    if not paths:
+        print("no result files matched", file=sys.stderr)
+        return 1
+
+    header = f"{'file':<44}{'objective':>12}{'iters':>8}{'time [s]':>10}{'violation':>11}  status"
+    print(header)
+    print("-" * len(header))
+    for path in paths:
+        name = Path(path).name
+        try:
+            result = load_result(path)
+        except (KeyError, ValueError, TypeError):
+            # Centralised / SCP runs are stored as plain archives.
+            with np.load(path, allow_pickle=False) as archive:
+                objective = float(archive["objective"]) if "objective" in archive else float("nan")
+                cpu = float(archive["cpu_time"]) if "cpu_time" in archive else float("nan")
+                violation = (
+                    float(archive["max_violation"]) if "max_violation" in archive else float("nan")
+                )
+            print(f"{name:<44}{objective:>12.3f}{'-':>8}{cpu:>10.1f}{violation:>11.3g}  solved")
+            continue
+        status = "converged" if result.converged else "not converged"
+        print(
+            f"{name:<44}{result.total_objective:>12.3f}{result.iterations:>8d}"
+            f"{result.cpu_time:>10.1f}{result.max_violation:>11.3g}  {status}"
+        )
+    return 0
+
+
 def cmd_plot(args: argparse.Namespace) -> int:
     from . import plotting
 
@@ -254,6 +286,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--starting-point", default="no control", choices=("no control", "feasible control")
     )
     scp.set_defaults(func=cmd_scp)
+
+    show = sub.add_parser("show", help="print saved result files as a table")
+    show.add_argument("--results", nargs="+", required=True, help="result .npz files or globs")
+    show.add_argument("-v", "--verbose", action="store_true")
+    show.set_defaults(func=cmd_show)
 
     plot = sub.add_parser("plot", help="figures (results_plotting.jl)")
     _common(plot)

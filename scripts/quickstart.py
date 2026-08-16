@@ -42,10 +42,12 @@ def main() -> int:
     print(f"    AZP {f_azp.mean():.2f} m, SCC {f_scc.mean():.2f} %,"
           f" worst head range {pressure_range(data.h_init).max():.2f} m")
 
-    print("4. standard ADMM, 25 iterations (use --max-iter 1000 to converge)")
+    print("4. standard ADMM -- deliberately stopped after 25 iterations")
     solver = StandardADMM(data, pv_type="range", delta_max=10.0)
     result = solver.solve(ADMMOptions(gamma=0.01, max_iter=25))
     print("   ", result.summary())
+    print("    'NOT converged' is expected here: this run is a 15-second taste.")
+    print("    A full run needs ~375 iterations -- see docs/使用说明.md, step 3.")
 
     print("5. figure")
     apply_style()

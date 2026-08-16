@@ -29,5 +29,8 @@ packages = ["wdn_admm"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Put the repository root on sys.path so a bare `pytest` works from a fresh
+# clone, without needing `pip install -e .` or `python -m pytest`.
+pythonpath = ["."]
 markers = ["slow: needs a full optimisation solve (enable with --run-slow)"]
 filterwarnings = ["ignore::PendingDeprecationWarning"]
