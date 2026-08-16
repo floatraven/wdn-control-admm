@@ -1,0 +1,12 @@
+# Runtime dependencies of the Python port.
+# CasADi bundles IPOPT (with MUMPS), so no commercial solver and no HSL
+# licence is needed anywhere in this package.
+numpy>=1.24
+scipy>=1.10
+h5py>=3.8
+casadi>=3.6
+osqp>=0.6
+matplotlib>=3.7
+
+# Testing
+pytest>=7.4
