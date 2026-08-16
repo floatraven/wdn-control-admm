@@ -8,7 +8,6 @@ Manifest.toml
 !data/problem_data/modena_nv_3_nf_4.jld2
 !data/problem_data/bwfl_2022_05_hw_nv_3_nf_4.jld2
 
-
 # ignore uploading below files
 admm_vanilla_threaded.jl
 admm_distributed_ECC23.jl
@@ -17,3 +16,19 @@ network_plotting.jl
 plots/
 results_plotting_old.jl
 manuscript_graphics/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+
+# Python solver output
+data/admm_results/
+data/two_level_results/
+data/centralised_results/
+data/scp_results/
